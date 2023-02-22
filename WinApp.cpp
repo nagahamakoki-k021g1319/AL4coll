@@ -29,8 +29,6 @@ bool WinApp::ProcessMessage()
 	}
 
 	return false;
-
-	return false;
 }
 
 void WinApp::Initialize()

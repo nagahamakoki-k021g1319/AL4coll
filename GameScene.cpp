@@ -1,5 +1,8 @@
 #include "GameScene.h"
 #include <cassert>
+#include <sstream>
+#include <iomanip>
+#include "Collision.h"
 
 using namespace DirectX;
 
@@ -55,7 +58,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input) {
 	}
 	// OBJからモデルデータを読み込み
 	{
-		model = Model::LoadFromOBJ("as");
+		model = Model::LoadFromOBJ("maru");
 		model2 = Model::LoadFromOBJ("as2");
 		guro = Model::LoadFromOBJ("Gound");
 	}
@@ -73,35 +76,53 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input) {
 	}
 	//3Dオブジェクトの位置を指定
 	{
-		object3d_2->SetPosition({ -5,-5,0 });
-		guround->SetPosition({ 0,-10,0 });
-		guround->SetScale({ 3,3,3 });
+		object3d->SetScale({ 1,1,1 });
+		object3d->SetPosition({0,15,0});
+		object3d_2->SetPosition({ -20,0,0 });
+	
 	}
+
+	//球の初期値を設定
+	sphere.center = XMVectorSet(0, 2, 0, 1); //中心点座標
+	sphere.radius = 1.0f;//半径
+
+	//平面の初期値を設定
+	plane.normal = XMVectorSet(0, 1, 0, 0); //法線ベクトル
+	plane.distance = 0.0;
+	
 }
 
 
 void GameScene::Update() {
 	object3d->Update();
 	guround->Update();
+	object3d->SetPosition({ sphere.center.m128_f32[0],sphere.center.m128_f32[1],sphere.center.m128_f32[2] });
 	// オブジェクト移動
 	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
 	{
 		// 現在の座標を取得
-		XMFLOAT3 position = object3d->GetPosition();
+		XMVECTOR moveY = XMVectorSet(0, 0.1f, 0, 0);
 
 		// 移動後の座標を計算
-		if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-		else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-		if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-		else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+		if (input->PushKey(DIK_UP)) { sphere.center += moveY; }
+		else if (input->PushKey(DIK_DOWN)) { sphere.center -= moveY; }
 
-		// 座標の変更を反映
-		object3d->SetPosition(position);
+		XMVECTOR moveX = XMVectorSet(0.1f, 0, 0, 0);
+		if (input->PushKey(DIK_RIGHT)) { sphere.center += moveX; }
+		else if (input->PushKey(DIK_LEFT)) { sphere.center -= moveX; }
 	}
+	//球と平面の当たり判定
+	ischackFlag = 0;
+	bool hit = Collision::CheckSphere2Plane(sphere, plane);
+	if (hit) {
+		ischackFlag = 1;
+	}
+
 
 	object3d_2->Update();
 
 	//当たり判定
+	
 	XMFLOAT3 a = object3d_2->GetPosition();
 	XMFLOAT3 b = object3d->GetPosition();
 	float xyz = std::pow(a.x - b.x, 2.0f) + std::pow(a.y - b.y, 2.0f) + std::pow(a.z - b.z, 2.0f);
@@ -109,11 +130,8 @@ void GameScene::Update() {
 	if (xyz <= lenR) {
 		ischackFlag = 1;
 	}
-	// リセット
-	if (input->PushKey(DIK_R)) {
-		ischackFlag = 0;
-	}
 
+	
 
 }
 

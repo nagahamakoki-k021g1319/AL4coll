@@ -9,6 +9,8 @@
 #include "Model.h"
 #include <string>
 #include <fstream>
+#include "CollisionPrimitive.h"
+
 
 /// <summary>
 /// ゲームシーン
@@ -80,8 +82,11 @@ private: // メンバ変数
 	Model* model2 = nullptr;
 	Model* guro = nullptr;
 
-
-	int soundCheckFlag = 0;
+	//当たり判定 球
+	Sphere sphere;
+	//当たり判定 平面
+	Plane plane;
+	
 
 };
 
