@@ -90,6 +90,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input) {
 	plane.normal = XMVectorSet(0, 1, 0, 0); //法線ベクトル
 	plane.distance = 0.0;
 	
+
 }
 
 
