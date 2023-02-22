@@ -170,6 +170,12 @@ public: // メンバ関数
 	/// <param name="position">座標</param>
 	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
 
+	/// <summary>
+	/// colorの設定
+	/// </summary>
+	/// <param name="position">座標</param>
+	void SetColor(const XMFLOAT4& color) { this->color = color; }
+
 	//setter
 	void SetModel(Model* model) { this->model = model; }
 
