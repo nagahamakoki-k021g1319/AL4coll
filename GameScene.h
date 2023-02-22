@@ -64,28 +64,6 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	Sprite* sprite = new Sprite();
-	XMFLOAT2 position = sprite->GetPosition();
-
-	Sprite* sprite1 = new Sprite();
-	XMFLOAT2 position1 = sprite1->GetPosition();
-
-	Sprite* sprite2 = new Sprite();
-	XMFLOAT2 position2 = sprite2->GetPosition();
-
-	int ischackFlag = 0;
-
-	Object3d* object3d = nullptr;
-	Object3d* object3d_2 = nullptr;
-	Object3d* guround = nullptr;
-	Model* model = nullptr;
-	Model* model2 = nullptr;
-	Model* guro = nullptr;
-
-	//当たり判定 球
-	Sphere sphere;
-	//当たり判定 平面
-	Plane plane;
 	
 
 };
