@@ -64,6 +64,10 @@ public:
 	/// <returns>åç∑ÇµÇƒÇ¢ÇÈÇ©î€Ç©</returns>
 	static bool CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* distance = nullptr, DirectX::XMVECTOR* inter = nullptr);
 
+	bool BoxCollision(XMFLOAT3 player, XMFLOAT3 enemy, XMFLOAT3 playerWidth, XMFLOAT3 enemyWidth);
 
+	bool BoxCircle(XMFLOAT3 boxPos, XMFLOAT3 circlePos,XMFLOAT3 boxWidth, float circleWidth);
+
+	bool CircleCollision(XMFLOAT3 playerPos, XMFLOAT3 enemyPos, float playerWidth, float enemyWidth);
 };
 

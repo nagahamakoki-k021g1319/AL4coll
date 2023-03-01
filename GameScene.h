@@ -10,6 +10,7 @@
 #include <string>
 #include <fstream>
 #include "CollisionPrimitive.h"
+#include "Collision.h"
 
 
 /// <summary>
@@ -56,6 +57,12 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	enum class Phase
+	{
+		TITLE,
+		GAMEOVER,
+	};
+
 private: // メンバ変数
 	DirectXCommon* dxCommon = nullptr;
 	Input* input = nullptr;
@@ -64,29 +71,14 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	Sprite* sprite = new Sprite();
-	XMFLOAT2 position = sprite->GetPosition();
 
-	Sprite* sprite1 = new Sprite();
-	XMFLOAT2 position1 = sprite1->GetPosition();
+	Object3d* playerObj = nullptr;
+	Object3d* doorObj = nullptr;
 
-	Sprite* sprite2 = new Sprite();
-	XMFLOAT2 position2 = sprite2->GetPosition();
-
-	int ischackFlag = 0;
-
-	Object3d* object3d = nullptr;
-	Object3d* object3d_2 = nullptr;
-	Object3d* guround = nullptr;
-	Model* model = nullptr;
-	Model* model2 = nullptr;
-	Model* guro = nullptr;
-
-	//当たり判定 球
-	Sphere sphere;
-	//当たり判定 平面
-	Plane plane;
+	Collision* collision = nullptr;
 	
+	//フェーズ
+	Phase phase_ = Phase::TITLE;
 
 };
 

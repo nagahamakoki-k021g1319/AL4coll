@@ -231,3 +231,100 @@ bool Collision::CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* dis
 
 	return true;
 }
+
+bool Collision::BoxCollision(XMFLOAT3 player, XMFLOAT3 enemy, XMFLOAT3 playerWidth, XMFLOAT3 enemyWidth)
+{
+
+	//プレイヤー
+	float pXMin = player.x - playerWidth.x;
+
+	float pXMax = player.x + playerWidth.x;
+
+	float pYMin = player.y - playerWidth.y;
+
+	float pYMax = player.y + playerWidth.y;
+
+	float pZMin = player.z - playerWidth.z;
+
+	float pZMax = player.z + playerWidth.z;
+
+	//敵
+	//平面
+	float eXMin = enemy.x - enemyWidth.x;
+
+	float eXMax = enemy.x + enemyWidth.x;
+
+	float eYMin = enemy.y - enemyWidth.y;
+
+	float eYMax = enemy.y + enemyWidth.y;
+
+	float eZMin = enemy.z - enemyWidth.z;
+
+	float eZMax = enemy.z + enemyWidth.z;
+
+	if ((pXMin <= eXMax && pXMax >= eXMin) && (pYMin <= eYMax && pYMax >= eYMin) && (pZMin <= eZMax && pZMax >= eZMin)) {
+		return true;
+	}
+	return false;
+}
+
+bool Collision::BoxCircle(XMFLOAT3 boxPos, XMFLOAT3 circlePos, XMFLOAT3 boxWidth, float circleWidth)
+{
+	//プレイヤー
+	float bXMin = boxPos.x - boxWidth.x;
+
+	float bXMax = boxPos.x + boxWidth.x;
+
+	float bYMin = boxPos.y - boxWidth.y;
+
+	float bYMax = boxPos.y + boxWidth.y;
+
+	float bZMin = boxPos.z - boxWidth.z;
+
+	float bZMax = boxPos.z + boxWidth.z;
+
+	XMFLOAT3 box1 = { bXMax,bYMax,bZMax };
+
+	XMFLOAT3 box2 = { bXMin,bYMax,bZMax };
+
+	XMFLOAT3 box3 = { bXMin,bYMax,bZMin };
+
+	XMFLOAT3 box4 = { bXMax,bYMax,bZMin };
+
+	XMFLOAT3 box5 = { bXMax,bYMin,bZMax };
+
+	XMFLOAT3 box6 = { bXMin,bYMin,bZMax };
+
+	XMFLOAT3 box7 = { bXMin,bYMin,bZMin };
+
+	XMFLOAT3 box8 = { bXMax,bYMin,bZMin };
+
+	double bo1c = (box1.x - circlePos.x) * (box1.x - circlePos.x) + (box1.y - circlePos.y) * (box1.y - circlePos.y) + (box1.z - circlePos.z) * (box1.z - circlePos.z);
+	double bo2c = (box2.x - circlePos.x) * (box2.x - circlePos.x) + (box2.y - circlePos.y) * (box2.y - circlePos.y) + (box2.z - circlePos.z) * (box2.z - circlePos.z);
+	double bo3c = (box3.x - circlePos.x) * (box3.x - circlePos.x) + (box3.y - circlePos.y) * (box3.y - circlePos.y) + (box3.z - circlePos.z) * (box3.z - circlePos.z);
+	double bo4c = (box4.x - circlePos.x) * (box4.x - circlePos.x) + (box4.y - circlePos.y) * (box4.y - circlePos.y) + (box4.z - circlePos.z) * (box4.z - circlePos.z);
+	double bo5c = (box5.x - circlePos.x) * (box5.x - circlePos.x) + (box5.y - circlePos.y) * (box5.y - circlePos.y) + (box5.z - circlePos.z) * (box5.z - circlePos.z);
+	double bo6c = (box6.x - circlePos.x) * (box6.x - circlePos.x) + (box6.y - circlePos.y) * (box6.y - circlePos.y) + (box6.z - circlePos.z) * (box6.z - circlePos.z);
+	double bo7c = (box7.x - circlePos.x) * (box7.x - circlePos.x) + (box7.y - circlePos.y) * (box7.y - circlePos.y) + (box7.z - circlePos.z) * (box7.z - circlePos.z);
+	double bo8c = (box8.x - circlePos.x) * (box8.x - circlePos.x) + (box8.y - circlePos.y) * (box8.y - circlePos.y) + (box8.z - circlePos.z) * (box8.z - circlePos.z);
+
+	double circleLen = circleWidth * circleWidth;
+	if (circleLen>=bo1c||circleLen>=bo2c||circleLen>=bo3c||circleLen>=bo4c|| circleLen >= bo5c || circleLen >= bo6c || circleLen >= bo7c || circleLen >= bo8c) {
+		return true;
+	}
+
+	return false;
+}
+
+bool Collision::CircleCollision(XMFLOAT3 playerPos, XMFLOAT3 enemyPos, float playerWidth, float enemyWidth)
+{
+	float lol = { (enemyPos.x - playerPos.x) * (enemyPos.x - playerPos.x) + (enemyPos.y - playerPos.y) * (enemyPos.y - playerPos.y) + (enemyPos.z - playerPos.z) * (enemyPos.z - playerPos.z) };
+
+	float redius = { (playerWidth + enemyWidth) * (playerWidth + enemyWidth) };
+
+	if (lol <= redius) {
+		return true;
+	}
+
+	return false;
+}
